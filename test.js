@@ -83,10 +83,11 @@ test(obj.session, V.String, V.ERROR_TYPE, "Non existing string");
 
 // NaN is not a number!
 test(NaN, V.Number, V.ERROR_TYPE, "NaN is not a number");
+test(NaN, V.Integer, V.ERROR_TYPE, "NaN is not an integer");
 
 // You can also test numbers for beeing integers aka non floating numbers.
-test(10, V.Int, V_ERROR_NONE, "Integer 1");
-test(10.1, V.Int, V.ERROR_TYPE, "Integer 2");
+test(10, V.Integer, V_ERROR_NONE, "Integer 1");
+test(10.1, V.Integer, V.ERROR_TYPE, "Integer 2");
 
 // V.Number etc. are just shortcuts for { type: "number" } etc.:
 test(obj.id, {
@@ -118,7 +119,7 @@ console.log("== 'Nested' object/array ==");
 test(obj, {
     type: "object",
     properties: {
-        id:     V.Number,
+        id:     V.Integer,
         action: V.String
     }
 }, V_ERROR_NONE, "Properties of object");
@@ -128,7 +129,7 @@ test(arr, {
     each: {
         type: "object",
         properties: {
-            id:     V.Number,
+            id:     V.Integer,
             action: V.String
         }
     }
@@ -138,7 +139,7 @@ test(arr, {
 test(arr, {
     type: "array",
     eachObject: {
-        id:     V.Number,
+        id:     V.Integer,
         action: V.String
     }
 }, V_ERROR_NONE, "Properties of array shortcut");
@@ -151,14 +152,14 @@ console.log("== AutoType ==");
 
 test(obj, {
     properties: {
-        id: V.Number
+        id: V.Integer
     }
 }, V_ERROR_NONE, "Object");
 
 test(arr, {
     each: {
         properties: {
-            id: V.Number
+            id: V.Integer
         }
     }
 }, V_ERROR_NONE, "Array");
@@ -180,7 +181,7 @@ test("foo bar foo", V.String(4, 7), V.ERROR_TEST,
     "Build in string test function maxLength 2");
 
 struct = {
-    type: "number",
+    type: "integer",
     test: function(obj, values, stack) {
         if (obj > 144) {
             return true;
@@ -209,7 +210,7 @@ console.log("== OnlyIf ==");
 test(arr, {
     name: 'someArray',
     eachObject: {
-        id:     V.Number,
+        id:     V.Integer,
         action: V.String,
         text: {
             type:   "string",
@@ -220,7 +221,7 @@ test(arr, {
             }
         },
         region: {
-            type:   "number",
+            type:   "integer",
             onlyIf: function(obj, values, stack) {
                 return values.action == "update";
             }
@@ -297,14 +298,14 @@ test(obj, V.Object({
 
 // Now we validate all properties.
 test(obj, V.Object({
-    id:     V.Number,
+    id:     V.Integer,
     action: V.is("insert"),
     admin:  V.Boolean
 }), V_ERROR_NONE /*PASS*/, "Test 2");
 
 // OnlyIf with strictMode.
 test(arr, V.Array({
-    id:     V.Number,
+    id:     V.Integer,
     action: V.String,
     text: {
         type:   "string",
@@ -313,7 +314,7 @@ test(arr, V.Array({
         }
     },
     region: {
-        type:   "number",
+        type:   "integer",
         onlyIf: function(obj, values, stack) {
             return values.action == "update";
         }
@@ -323,7 +324,7 @@ test(arr, V.Array({
 // This will fail, as we validate the 'action' property only if id == 1, but the
 // array has an entry with id == 144 and the property 'action' as well.
 test(arr, V.Array({
-    id:     V.Number,
+    id:     V.Integer,
     action: {
         type: "string",
         onlyIf: function(obj, values, stack) {
@@ -337,7 +338,7 @@ test(arr, V.Array({
         }
     },
     region: {
-        type:   "number",
+        type:   "integer",
         onlyIf: function(obj, values, stack) {
             return values.action == "update";
         }

@@ -304,8 +304,8 @@ V.Number = {
     type: "number"
 };
 
-V.Int = {
-    type: "int"
+V.Integer = {
+    type: "integer"
 }
 
 V.Object = function(properties) {
@@ -358,9 +358,9 @@ V.isNumber = function(obj) {
     return (typeof obj) === "number" && !isNaN(obj);
 };
 
-V.isInt = function(obj) {
+V.isInteger = function(obj) {
     return V.isNumber(obj) && (obj % 1 == 0);
-}
+};
 
 V.isArray = function(obj) {
     return Array.isArray(obj);
@@ -374,7 +374,7 @@ $validObj = {
     boolean: V.isBoolean,
     string:  V.isString,
     number:  V.isNumber,
-    int:     V.isInt,
+    integer: V.isInteger,
     object:  V.isObject,
     array:   V.isArray
 };
