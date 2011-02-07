@@ -346,6 +346,84 @@ test(arr, V.Array({
 }), V.ERROR_STRICT /*FAIL*/, "Test 4");
 
 /** ===========================================================================
+ * The last test is valid, but it's a little bit hard to figure out in which
+ * cases the region and in which cases the text property is validated. You can
+ * rewrite this as the following which should be much more cleaner to read.
+ */
+console.log("== Advanced Properties ==");
+
+test(arr, V.Array(
+    V.ObjectOnlyIf("action", "insert", {
+        id:     V.Integer,
+        action: V.String,
+        text:   V.String
+    }),
+    V.ObjectOnlyIf("action", "update", {
+        id:     V.Integer,
+        action: V.String,
+        region: V.Integer
+    })
+), V_ERROR_NONE, "Multiple object structures 1");
+
+// Does 100% the same as the last test, but don't use any shortcuts.
+test(arr, {
+    type: "array",
+    each: [{
+        type:   "object",
+        onlyIf: function(obj) {
+            return obj.action == "insert";
+        },
+        properties: {
+            id:     V.Integer,
+            action: V.String,
+            text:   V.String
+        }
+    }, {
+        type:   "object",
+        onlyIf: function(obj) {
+            return obj.action == "update";
+        },
+        properties: {
+            id:     V.Integer,
+            action: V.String,
+            region: V.Integer
+        }
+    }]
+}, V_ERROR_NONE, "Multiple object structures 2");
+
+// Still the same, using some shortcuts.
+test(arr, V.Array({
+    type:   "object",
+    onlyIf: function(obj) {
+        return obj.action == "insert";
+    },
+    properties: {
+        id:     V.Integer,
+        action: V.String,
+        text:   V.String
+    }
+}, {
+    type:   "object",
+    onlyIf: function(obj) {
+        return obj.action == "update";
+    },
+    properties: {
+        id:     V.Integer,
+        action: V.String,
+        region: V.Integer
+    }
+}), V_ERROR_NONE, "Multiple object structures 3");
+
+// This will fail, as there is no rule to validate the "update" action
+test(arr, V.Array(
+    V.ObjectOnlyIf("action", "insert", {
+        id:     V.Integer,
+        action: V.String,
+        text:   V.String
+    })
+), V.ERROR_STRICT, "Multiple object structures 4");
+
+/** ===========================================================================
  * Let's hope all tests passed!
  */
 console.log(">>> Test passed:", testPassed, "/", testCount);

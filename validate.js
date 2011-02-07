@@ -319,11 +319,32 @@ V.Object.$default = {
     type: "object"
 };
 
-V.Array = function(eachObjectProperties) {
+V.ObjectOnlyIf = function(key, value, properties) {
     return {
-        type: "array",
-        eachObject: eachObjectProperties
-    };
+        type: "object",
+        onlyIf: function(obj) {
+            return obj[key] == value;
+        },
+        properties: properties
+    }
+}
+
+V.Array = function() {
+    if (arguments.length == 1 && arguments[0].type != "object") {
+        return {
+            type: "array",
+            eachObject: arguments[0]
+        };
+    } else {
+        var args = [];
+        for (var i = 0; i < arguments.length; i++) {
+            args.push(arguments[i]);
+        }
+        return {
+            type: "array",
+            each: args
+        };
+    }
 };
 
 V.Array.$default = {
