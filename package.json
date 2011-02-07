@@ -1,0 +1,11 @@
+{
+  "name" : "validatejs",
+  "description" : "Small library to validate the structure of JS objects",
+  "keywords" : ["validate"],
+  "author" : "Julian Viereck <julian.viereck@gmail.com>",
+  "contributors" : [],
+  "dependencies" : [],
+  "lib" : ".",
+  "main" : "validate.js",
+  "version" : "0.1.0"
+}
